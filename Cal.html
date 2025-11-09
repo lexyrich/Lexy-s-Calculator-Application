@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Calculator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to right,brown,yellow,purple);
+      font-family: Comic Sans MS,cursive,Sans-Serif;
+    }
+    .calculator {
+      background: linear-gradient(blue,purple);
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    #display {
+      background: grey;
+      color: darkred;
+      text-align: right;
+      padding: 20px;
+      font-size: 2em;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      overflow-x: auto;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    button {
+      padding: 20px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: linear-gradient(to right,orange,brown);
+      color: pink;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #666;
+    }
+    #equals {
+      grid-column: span 2;
+      background: #0a84ff;
+    }
+    #clear {
+      background: #ff3b30;
+    }
+  </style>
+</head>
+<body>
+  
+<main>
+  <div class="calculator">
+    <h1>Lexy's Calculator App</h1>
+    <div id="display">0</div>
+    <div class="buttons">
+      <button id="clear">AC</button>
+      <button id="divide">/</button>
+      <button id="multiply">*</button>
+      <button id="subtract">-</button>
+
+      <button id="seven">7</button>
+      <button id="eight">8</button>
+      <button id="nine">9</button>
+      <button id="add">+</button>
+
+      <button id="four">4</button>
+      <button id="five">5</button>
+      <button id="six">6</button>
+      <button id="one">1</button>
+
+      <button id="two">2</button>
+      <button id="three">3</button>
+      <button id="zero">0</button>
+      <button id="decimal">.</button>
+
+      <button id="equals">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    let input = "";
+    let evaluated = false;
+
+    const endsWithOperator = /[+\-*/]$/;
+
+    function updateDisplay(value) {
+      display.textContent = value || "0";
+    }
+
+    function handleNumber(num) {
+      if (evaluated) {
+        input = num;
+        evaluated = false;
+      } else {
+        if (input === "0" && num === "0") return; // prevent multiple leading zeros
+        input += num;
+      }
+      updateDisplay(input);
+    }
+
+    function handleOperator(op) {
+      if (evaluated) {
+        input = display.textContent + op;
+        evaluated = false;
+      } else if (endsWithOperator.test(input)) {
+        if (op === "-" && input.slice(-1) !== "-") {
+          input += op;
+        } else {
+          input = input.replace(endsWithOperator, op);
+        }
+      } else {
+        input += op;
+      }
+      updateDisplay(input);
+    }
+
+    function handleDecimal() {
+      const lastNumber = input.split(/[+\-*/]/).pop();
+      if (!lastNumber.includes(".")) {
+        input += ".";
+      }
+      updateDisplay(input);
+    }
+
+    function handleClear() {
+      input = "";
+      evaluated = false;
+      updateDisplay("0");
+    }
+
+    function handleEvaluate() {
+      try {
+        let result = eval(input);
+        result = Math.round(result * 10000) / 10000; // 4 decimal precision
+        input = result.toString();
+        updateDisplay(input);
+        evaluated = true;
+      } catch {
+        updateDisplay("Error");
+        input = "";
+      }
+    }
+
+    document.getElementById("zero").addEventListener("click", () => handleNumber("0"));
+    document.getElementById("one").addEventListener("click", () => handleNumber("1"));
+    document.getElementById("two").addEventListener("click", () => handleNumber("2"));
+    document.getElementById("three").addEventListener("click", () => handleNumber("3"));
+    document.getElementById("four").addEventListener("click", () => handleNumber("4"));
+    document.getElementById("five").addEventListener("click", () => handleNumber("5"));
+    document.getElementById("six").addEventListener("click", () => handleNumber("6"));
+    document.getElementById("seven").addEventListener("click", () => handleNumber("7"));
+    document.getElementById("eight").addEventListener("click", () => handleNumber("8"));
+    document.getElementById("nine").addEventListener("click", () => handleNumber("9"));
+
+    document.getElementById("add").addEventListener("click", () => handleOperator("+"));
+    document.getElementById("subtract").addEventListener("click", () => handleOperator("-"));
+    document.getElementById("multiply").addEventListener("click", () => handleOperator("*"));
+    document.getElementById("divide").addEventListener("click", () => handleOperator("/"));
+
+    document.getElementById("decimal").addEventListener("click", handleDecimal);
+    document.getElementById("clear").addEventListener("click", handleClear);
+    document.getElementById("equals").addEventListener("click", handleEvaluate);
+  </script>
+<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+</main>
+</body>
+</html>
