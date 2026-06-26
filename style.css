@@ -1,0 +1,48 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+     height: 100vh;
+     background-image: url("code.jpg");
+     margin: 0;
+     font-family: sans-serif;
+}
+.calculator{
+  background-image: url("foods .jpg");
+  padding: 20px;
+  border-radius: 10px;
+  width: 320px;
+}
+.screen{
+  background-color: black ;
+  color: white;
+  font-size: 2rem;
+  padding: 20px;
+  text-align: right;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height:60px;
+  overflow: hidden;
+}
+
+.calculator-buttons{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+
+}
+button{
+  padding: 20px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 50px;
+  background-color: yellow;
+  cursor: pointer;
+}
+ button:active {
+   background-color: blueviolet;
+ }
+
